@@ -17,13 +17,8 @@ const navItems: NavItem[] = [
     icon: Home,
   },
   {
-    title: "Search",
-    href: "/search",
-    icon: Search,
-  },
-  {
-    title: "My Books",
-    href: "/my-books",
+    title: "Books",
+    href: "/books",
     icon: BookOpen,
   },
   {

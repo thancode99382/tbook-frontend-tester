@@ -39,7 +39,7 @@ export const createBook = async (formData: FormData): Promise<any> => {
       apiFormData.append('file', imageFile); // This must exactly match the field name expected by Multer
     }
     
-    // Debug what we're sending to the server
+    
     console.log("Sending to server:");
     console.log("- bookdata:", JSON.stringify(bookData));
     console.log("- chapters:", chapters);
@@ -64,7 +64,7 @@ export const createBook = async (formData: FormData): Promise<any> => {
  */
 export const getBooks = async (): Promise<Book[]> => {
   try {
-    const response = await api.get('/books');
+    const response = await api.get('/books/all');
     return response.data;
   } catch (error) {
     throw error;
@@ -85,6 +85,8 @@ export const getBookById = async (id: string): Promise<Book> => {
   }
 };
 
+
+
 /**
  * Update a book
  * @param id Book id
@@ -104,13 +106,14 @@ export const updateBook = async (id: string, formData: FormData): Promise<Book> 
   }
 };
 
+
 /**
  * Delete a book
  * @param id Book id
  */
 export const deleteBook = async (id: string): Promise<void> => {
   try {
-    await api.delete(`/books/${id}`);
+    await api.delete(`/book/delete/${id}`);
   } catch (error) {
     throw error;
   }

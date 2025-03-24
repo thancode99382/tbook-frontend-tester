@@ -4,8 +4,6 @@ import { getToken } from './auth';
 // Define the base URL for API calls
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
-console.log('API URL:', API_URL); // Log the API URL to verify it's correct
-
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_URL,
