@@ -17,7 +17,7 @@ console.log(book)
         const { slug } = await params;
 
         const bookData = await getBookById(slug); // Fetch the book using the slug
-        setBook(bookData);
+        setBook(bookData.DT);
         console.log(bookData);
       } catch (error) {
         console.error("Error in getBookById:", error);

@@ -13,7 +13,7 @@ export default function Home() {
       try {
         const response = await getBooks();
 
-        setBooks(response);
+        setBooks(response.DT);
       } catch (error) {
         console.error("Error in getBooks:", error);
       }

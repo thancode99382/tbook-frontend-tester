@@ -17,8 +17,8 @@ const BooksManagement = () => {
       try {
         setIsLoading(true);
         const booksData = await getBooks();
-        setBooks(booksData);
-        setFilteredBooks(booksData);
+        setBooks(booksData.DT);
+        setFilteredBooks(booksData.DT);
       } catch (error) {
         console.error("Error fetching books:", error);
       } finally {
