@@ -1,8 +1,10 @@
 import axios from "axios";
 
 // Define the base URL for API calls
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+// const API_URL =
+//   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+
+const API_URL = "https://tbookvd-api.azurewebsites.net/api/v1";
 
 // Create axios instance with default config
 const authApi = axios.create({

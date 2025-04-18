@@ -10,7 +10,7 @@ const DocumentationPage = ({
   params: Promise<{ slug: string }>;
 }) => {
   const [book, setBook] = useState<any>({});
-
+console.log(book)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,8 +18,8 @@ const DocumentationPage = ({
         const { slug } = await params;
 
         const bookData = await getBookById(slug); // Fetch the book using the slug
-        setBook(bookData.DT.DT);
-        console.log(bookData.DT.DT);
+        setBook(bookData.DT);
+        console.log(bookData.DT);
       } catch (error) {
         console.error("Error in getBookById:", error);
       }
