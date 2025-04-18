@@ -1,18 +1,19 @@
 "use client";
 
 import { getBooks } from "@/services/bookService";
+import type { Book } from "@/services/bookService";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const response = await getBooks();
 
-        setBooks(response.DT);
+        setBooks(response);
       } catch (error) {
         console.error("Error in getBooks:", error);
       }

@@ -2,7 +2,6 @@
 
 import { getBookById } from "@/services/bookService";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 
 const DocumentationPage = ({
   params,
@@ -18,8 +17,8 @@ console.log(book)
         const { slug } = await params;
 
         const bookData = await getBookById(slug); // Fetch the book using the slug
-        setBook(bookData.DT);
-        console.log(bookData.DT);
+        setBook(bookData);
+        console.log(bookData);
       } catch (error) {
         console.error("Error in getBookById:", error);
       }

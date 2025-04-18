@@ -1,23 +1,24 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { FiEdit2, FiTrash2, FiPlus, FiSearch } from "react-icons/fi";
+import { FiTrash2, FiPlus, FiSearch } from "react-icons/fi";
 import { deleteBook, getBooks } from "@/services/bookService";
+import type { Book } from '@/services/bookService';
 import Link from "next/link";
 
 const BooksManagement = () => {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         setIsLoading(true);
-        const response = await getBooks();
-        setBooks(response.DT || []);
-        setFilteredBooks(response.DT || []);
+        const booksData = await getBooks();
+        setBooks(booksData);
+        setFilteredBooks(booksData);
       } catch (error) {
         console.error("Error fetching books:", error);
       } finally {
@@ -39,7 +40,7 @@ const BooksManagement = () => {
     }
   }, [searchTerm, books]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this book?")) {
       try {
         await deleteBook(id);
@@ -135,7 +136,13 @@ const BooksManagement = () => {
                   
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => handleDelete(book.id)}
+                      onClick={() => {
+                        if (book.id) {
+                          handleDelete(book.id);
+                        } else {
+                          console.error("Attempted to delete book without an ID");
+                        }
+                      }}
                       className="p-2 text-destructive hover:bg-destructive/10 rounded-full transition-colors"
                       title="Delete Book"
                     >

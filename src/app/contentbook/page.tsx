@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FiArrowLeft, FiBook } from "react-icons/fi";
 
 interface Book {
-  id: string;
+  id?: string; // Make id optional to match the service definition
   title: string;
   imageUrl?: string;
 }
@@ -23,7 +23,7 @@ export default function ContentBookList() {
       try {
         setIsLoading(true);
         const response = await getBooks();
-        setBooks(response.DT || []);
+        setBooks(response || []);
       } catch (error) {
         console.error("Error fetching books:", error);
       } finally {
@@ -71,7 +71,7 @@ export default function ContentBookList() {
             <FiBook className="mx-auto h-12 w-12" />
           </div>
           <h3 className="text-lg font-semibold mb-1">No books available</h3>
-          <p className="text-muted-foreground mb-4">You haven't added any books to your library yet.</p>
+          <p className="text-muted-foreground mb-4">You havent added any books to your library yet.</p>
           <Link 
             href="/createBooksAndChapter" 
             className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
@@ -85,7 +85,13 @@ export default function ContentBookList() {
             <div
               key={book.id}
               className="bg-card rounded-lg shadow-sm border border-border/40 card-hover overflow-hidden cursor-pointer"
-              onClick={() => handleBookClick(book.id)}
+              onClick={() => {
+                if (book.id) {
+                  handleBookClick(book.id);
+                } else {
+                  console.error("Attempted to handle click for book without an ID");
+                }
+              }}
             >
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-2">{book.title}</h2>
