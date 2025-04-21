@@ -1,9 +1,7 @@
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 // Define the base URL for API calls
-// const API_URL =
-//   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-
 const API_URL = "https://tbookvd-api.azurewebsites.net/api/v1";
 
 // Create axios instance with default config
@@ -53,10 +51,17 @@ export const login = async (
 ): Promise<LoginResponse> => {
   try {
     const response = await authApi.post<LoginResponse>("/login", credentials);
-    console.log(response.data);
-    // Store token in localStorage for future authenticated requests
+    // Store token in cookie for future authenticated requests
     if (response.data.DT.access_token) {
-      localStorage.setItem("auth_token", response.data.DT.access_token);
+      Cookies.set('auth_token', response.data.DT.access_token, { 
+        expires: 7, // Token expires in 7 days
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
+      });
+      localStorage.setItem('user', JSON.stringify({
+        username: response.data.DT.username,
+        email: response.data.DT.email
+      }));
     }
 
     return response.data;
@@ -79,9 +84,13 @@ export const register = async (
   try {
     const response = await authApi.post<AuthResponse>("/register", userData);
 
-    // Store token in localStorage after successful registration
+    // Store token in cookie after successful registration
     if (response.data.token) {
-      localStorage.setItem("auth_token", response.data.token);
+      Cookies.set('auth_token', response.data.token, { 
+        expires: 7,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
+      });
     }
 
     return response.data;
@@ -96,8 +105,11 @@ export const register = async (
 /**
  * Logout user
  */
-export const logout = (): void => {
-  localStorage.removeItem("auth_token");
+export const logout = async (): Promise<void> => {
+  Cookies.remove('auth_token', { path: '/' });
+  localStorage.removeItem('user');
+  // Force a hard refresh to ensure middleware catches the removed token
+  window.location.href = '/login';
 };
 
 /**
@@ -106,7 +118,7 @@ export const logout = (): void => {
  */
 export const getToken = (): string | null => {
   if (typeof window !== "undefined") {
-    return localStorage.getItem("auth_token");
+    return Cookies.get('auth_token') || null;
   }
   return null;
 };

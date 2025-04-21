@@ -3,10 +3,13 @@
 import { useState, useEffect } from "react";
 import { Bell, User } from "lucide-react";
 import Link from "next/link";
+import { logout } from '@/services/auth';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     // Get user info from local storage or any other source
@@ -85,10 +88,10 @@ export default function Header() {
                 <div className="py-1 border-t border-border">
                   <Link 
                     href="/login" 
-                    onClick={() => {
+                    onClick={async (e) => {
+                      e.preventDefault();
                       setIsDropdownOpen(false);
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("user");
+                      await logout();
                     }}
                     className="block px-4 py-2 text-sm text-destructive hover:bg-muted transition-colors"
                   >

@@ -31,7 +31,9 @@ function Login() {
     
     try {
       await login(loginData);
-      router.push('/home'); // Redirect to home page after successful login
+      // Add a small delay to ensure cookie is set
+      await new Promise(resolve => setTimeout(resolve, 100));
+      router.replace('/home');
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);

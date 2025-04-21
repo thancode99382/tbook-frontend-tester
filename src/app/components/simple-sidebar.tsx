@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, BookOpen, PlusCircle, LogOut, Search, Moon, Sun } from "lucide-react";
 import { useState, useEffect } from "react";
+import { logout } from '@/services/auth';
+import { useRouter } from 'next/navigation';
 
 type NavItem = {
   title: string;
@@ -35,6 +37,7 @@ const navItems: NavItem[] = [
 
 export function SimpleSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -170,9 +173,9 @@ export function SimpleSidebar() {
           <Link
             href="/login"
             className="flex items-center gap-2 px-3 py-2 rounded-md text-foreground hover:bg-muted transition-colors w-full"
-            onClick={() => {
-              // Logout implementation can be added here
-              localStorage.removeItem("token");
+            onClick={async (e) => {
+              e.preventDefault();
+              await logout();
             }}
           >
             <LogOut size={18} />
