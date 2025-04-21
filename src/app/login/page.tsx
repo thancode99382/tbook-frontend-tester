@@ -2,12 +2,10 @@
 
 import React, { useState } from 'react';
 import { login } from '@/services/auth';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
 function Login() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -31,16 +29,14 @@ function Login() {
     
     try {
       await login(loginData);
-      // Add a small delay to ensure cookie is set
-      await new Promise(resolve => setTimeout(resolve, 100));
-      router.replace('/home');
+      // Use window.location for navigation to ensure proper cookie handling
+      window.location.href = '/home';
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
         setError('An unexpected error occurred');
       }
-    } finally {
       setIsLoading(false);
     }
   }
