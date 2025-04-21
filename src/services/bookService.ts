@@ -89,23 +89,21 @@ export const getBookById = async (id: string): Promise<Book> => {
 
 /**
  * Update a book
- * @param id Book id
- * @param bookData Updated book data
+ * @param bookId Book id
+ * @param title Updated book title
  * @returns Updated book data
  */
-export const updateBook = async (id: string, formData: FormData): Promise<Book> => {
+export const updateBook = async (bookId: number, title: string): Promise<any> => {
   try {
-    const response = await api.put(`/books/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    const response = await api.put(`/book/update`, {
+      bookId,
+      title
     });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
-
 
 /**
  * Delete a book
